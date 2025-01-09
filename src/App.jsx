@@ -1,11 +1,14 @@
-import { FaReact } from "react-icons/fa";
+
+import Inputs from "./components/Inputs";
+import TopButtons from "./components/TopButtons";
 
 const App = () => {
   return (
-    <div>
-      <h1 className="text-7xl font-bold">Helloaa</h1>
-      <FaReact size={50} className="text-red-500"/>
-    
+    <div className="mx-auto max-w-screen-lg mt-4 py-5 px-32 bg-gradient-to-br shadow-xl shadow-gray-400 from-cyan-600 to-blue-700">
+      <TopButtons />
+      <Inputs />
+
+      
     </div>
   );
 };

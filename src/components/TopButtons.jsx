@@ -1,4 +1,5 @@
-const TopButtons = () => {
+/* eslint-disable react/prop-types */
+const TopButtons = ({setQuery}) => {
   const cities = [
     { id: 1, name: "London" },
     { id: 2, name: "Sydney" },
@@ -13,6 +14,7 @@ const TopButtons = () => {
         <button
           key={city.id}
           className="text-lg font-medium hover:bg-gray-700/20 px-3 rounded-md transition ease-in"
+          onClick={() => setQuery({ q: city.name })}
         >
           {city.name}
         </button>

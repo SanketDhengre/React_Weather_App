@@ -4,8 +4,9 @@ This is a simple weather application created using React. It fetches data from t
 ## Features
 - Fetches weather data from the OpenWeather API
 - Displays current weather information
-- Supports searching for weather in different cities
+- Supports searching for weather in different cities and your current location.
 - Provides weather details such as temperature, humidity, wind speed, and weather conditions
+- Shows the weather in °C and °F.
 
 ![image](https://user-images.githubusercontent.com/83276393/232554353-a4e55c89-3dff-4755-9eb8-f9db05ef202f.png)
 

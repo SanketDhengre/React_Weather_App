@@ -5,7 +5,7 @@ const TopButtons = ({setQuery}) => {
     { id: 2, name: "Sydney" },
     { id: 3, name: "Tokyo" },
     { id: 4, name: "Paris" },
-    { id: 5, name: "Toronto" },
+    { id: 5, name: "Seoul" },
   ];
 
   return (

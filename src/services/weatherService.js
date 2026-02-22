@@ -22,13 +22,15 @@ const formatToLocalTime = (
 const formatCurrent = (data) => {
   const {
     coord: { lon, lat },
-    main: { temp, feels_like, temp_min, temp_max, humidity },
+    main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
     name,
     dt,
     sys: { country, sunrise, sunset },
     weather,
-    wind: { speed },
+    wind: { speed, deg },
     timezone,
+    visibility = 10000,
+    clouds = { all: 0 },
   } = data;
 
   const { main: details, icon } = weather[0];
@@ -40,11 +42,13 @@ const formatCurrent = (data) => {
     temp_min,
     temp_max,
     humidity,
+    pressure,
     name,
     country,
     sunrise: formatToLocalTime(sunrise, timezone, "hh:mm a"),
     sunset: formatToLocalTime(sunset, timezone, "hh:mm a"),
     speed,
+    deg,
     details,
     icon: iconUrlFromCode(icon),
     formattedLocalTime,
@@ -52,6 +56,8 @@ const formatCurrent = (data) => {
     timezone,
     lat,
     lon,
+    visibility,
+    cloudiness: clouds.all,
   };
 };
 
@@ -88,13 +94,22 @@ const getFormattedWeatherData = async (searchParams) => {
 
   const { dt, lat, lon, timezone } = formattedCurrentWeather;
 
-  const formattedForecastWeather = await getWeatherData("forecast", {
-    lat,
-    lon,
-    units: searchParams.units,
-  }).then((d) => formatForecastWeather(dt, timezone, d.list));
+  const [formattedForecastWeather, aqiData] = await Promise.all([
+    getWeatherData("forecast", {
+      lat,
+      lon,
+      units: searchParams.units,
+    }).then((d) => formatForecastWeather(dt, timezone, d.list)),
+    getWeatherData("air_pollution", {
+      lat,
+      lon,
+    }).then((d) => ({
+      aqi: d.list[0].main.aqi,
+      components: d.list[0].components,
+    })).catch(() => ({ aqi: 1, components: {} })) // safe fallback
+  ]);
 
-  return { ...formattedCurrentWeather, ...formattedForecastWeather };
+  return { ...formattedCurrentWeather, ...formattedForecastWeather, aqi: aqiData.aqi, components: aqiData.components };
 };
 
 export default getFormattedWeatherData;
